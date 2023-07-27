@@ -19,10 +19,11 @@ mongoose.Promise = global.Promise;
     usenewUrlParser: true,
     useUnifiedToplogy: true
 }) */
-mongoose.connect("mongodb+srv://gulhayosayfullayeva:ZfgPyoS9P9TuQy0U@cfdb.2nuttf5.mongodb.net/CFdb?retryWrites=true&w=majority" , {useMongoClient:true},
+mongoose.connect("mongodb+srv://gulhayosayfullayeva:ZfgPyoS9P9TuQy0U@cfdb.2nuttf5.mongodb.net/CFdb?retryWrites=true&w=majority",
 {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useMongoClient:true
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
