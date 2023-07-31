@@ -436,14 +436,15 @@ app.delete("/users/:username", passport.authenticate("jwt", {
     })
 });
 
-app.post("/login",/*  [
+app.post("/login", [
     check("username", "username required").isLength({
         min: 5
     }),
     check("username", "username should contain only alphanumeric").isAlphanumeric(),
     check("password", "password required").not().isEmpty()
-],  */(req, res) => {
-    /* let errors = validationResult(req);
+], (req, res) => {
+    let errors = validationResult(req);
+    let hashedPassword = Users.hashPassword(req.body.password);
     if (!errors.isEmpty()) {
         return res.status(422).json({
             errors: errors.array()
@@ -459,8 +460,7 @@ app.post("/login",/*  [
             res.status(500).send("No such user: " + error);
         }
 
-    }); */
-    res.json(req.body.username);
+    });
 })
 
 app.use((err, req, res, next) => {
