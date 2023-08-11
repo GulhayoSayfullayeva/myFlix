@@ -355,6 +355,7 @@ app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req
         if (error) {
             res.status(500).send("Error: " + error);
         } else {
+            console.log(updatedUser);
             res.json(updatedUser);
         }
     });
