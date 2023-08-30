@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 /* CORS:(for allowed domains) in order to filter the domains which can request to our server */
 const cors = require('cors');
 app.use(cors()); /* if there are certain domains, they will be added here */
-let allowedOrigins = ["myflix-client-gulhayo.netlify.app"];
+let allowedOrigins = ["https://myflix-client-career-foundry.netlify.app"];
 
 app.use(cors({
   origin: (origin, callback) => {
