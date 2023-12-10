@@ -1,3 +1,8 @@
+/**
+ * @module Index
+ * @description This is the main file of the application storing all the apis
+ */
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -233,14 +238,24 @@ app.get("/", (req, res) => {
     res.send(res_Text);
 });
 
-/*  Request to get the documentation of the application */
+/**
+ * @description Get the documentation
+ * @returns
+ * documentation.html file 
+ */
 app.get("/documentation", (req, res) => {
     res.sendFile("public/documentation.html", {
         root: __dirname
     });
 });
 
-/* Request to get the list of  all movies */
+/**
+ * @description Get all movies 
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object including the list of the movies  
+ */
 app.get("/movies", passport.authenticate("jwt", {session: false}), (req, res) => {
     Movies.find().then(movies => {
         res.json(movies);
@@ -249,6 +264,13 @@ app.get("/movies", passport.authenticate("jwt", {session: false}), (req, res) =>
     })
 
 });
+/**
+ * @description Get all users 
+ * @example
+ * Authentication: none
+ * @returns
+ * JSON object including the list of all the users  
+ */
 app.get("/users",  (req, res) => {
     Users.find().then(users => {
         res.json(users);
@@ -256,7 +278,14 @@ app.get("/users",  (req, res) => {
 
 });
 
-/* Request to get the movie according to the its title */
+/**
+ * @description Get a movie according to the title 
+ * @name GET /movies/:title
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object containing the movie with the given title  
+ */
 app.get('/movies/:title', passport.authenticate("jwt", {session: false}),(req, res) => {
     Movies.findOne({
         title: req.params.title
@@ -273,7 +302,14 @@ app.get('/movies/:title', passport.authenticate("jwt", {session: false}),(req, r
 
 
 
-/* Request to get the movie genre(description) according to the its title */
+/**
+ * @description Get details of the movie genre 
+ * @name GET /movies/genreName/:name
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object containing the genre object of movie  
+ */
 app.get("/movies/genreName/:name", passport.authenticate("jwt", {session: false}),(req, res) => {
     Movies.findOne({
         "genre.name": req.params.name
@@ -288,7 +324,14 @@ app.get("/movies/genreName/:name", passport.authenticate("jwt", {session: false}
 });
 
 
-/* Request to get the director info according t his name */
+/**
+ * @description Get details of the movie director
+ * @name GET /movies/directors/:directorName
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object containing the director object  
+ */
 app.get("/movies/directors/:directorName", passport.authenticate("jwt", {session: false}),(req, res) => {
     Movies.findOne({
         "director.name": req.params.directorName
@@ -304,7 +347,16 @@ app.get("/movies/directors/:directorName", passport.authenticate("jwt", {session
 
 });
 
-/* Request to register new user */
+/**
+ * @description Post the user
+ * @name POST /users
+ * @example
+ * Authentication: none
+ * @example
+ * Request body format: a JSON object holding the user data
+ * @returns
+ * JSON object containing the registered user object   
+ */
 app.post("/users",
         [
             check("username", "username required").isLength({min:5}),
@@ -339,7 +391,15 @@ app.post("/users",
     });
 });
 
-/* Request to update the user info with given id */
+/**
+ * @description Update user with the username 
+ * @name PUT /users/:username
+ * @example
+ * Authentication: Bearer token (JWT)
+ * Request body format: a JSON object holding the updated user data
+ * @returns
+ * JSON object containing the updated user data  
+ */
 app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req, res) => {
     let hashedPassword = Users.hashPassword(req.body.password);
     Users.findOneAndUpdate({
@@ -363,8 +423,14 @@ app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req
         }
     });
 });
-
-/* Request to add a movie to the favourite list of the  user with given id */
+/**
+ * @description Add movie to the favouriteList 
+ * @name POST /users/:username/:favouriteMovieId
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object containing the updated user data  
+ */
 app.post("/users/:username/:favouriteMovieId", passport.authenticate("jwt", {session: false}),(req, res) => {
     Users.findOneAndUpdate({
         "username": req.params.username
@@ -382,8 +448,14 @@ app.post("/users/:username/:favouriteMovieId", passport.authenticate("jwt", {ses
         }
     });
 });
-
-/* Request to delete a movie from the favourite list of the  user with given id */
+/**
+ * @description Delete movie from the favouriteList 
+ * @name DELETE /users/:username/:favouriteMovieId
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * JSON object containing the updated user data  
+ */
 app.delete("/users/:username/:favouriteMovieId",passport.authenticate("jwt", {session: false}), (req, res) => {
     Users.findOneAndUpdate({
         "username": req.params.username
@@ -402,7 +474,14 @@ app.delete("/users/:username/:favouriteMovieId",passport.authenticate("jwt", {se
     })
 });
 
-/* Request to delete the  user with given id from the userlist */
+/**
+ * @description Delete user with the given username 
+ * @name DELETE /users/:username
+ * @example
+ * Authentication: Bearer token (JWT)
+ * @returns
+ * message about deletion  
+ */
 app.delete("/users/:username", passport.authenticate("jwt", {session: false}),(req, res) => {
     Users.findOneAndRemove({
         "username": req.params.username

@@ -10,7 +10,15 @@ let generateJWTToken = (user)=>{
         algorithm: "HS256"
     });
 }
-
+/**
+ * @description Login user 
+ * @name POST /login
+ * @example
+ * Authentication: none
+ * Request body format: a JSON object holding the user credentials
+ * @returns
+ * JSON object containing the user data,  
+ */
 module.exports = (router) =>{
     router.post("/login", (req, res)=>{
         passport.authenticate('local', { session: false }, (error, user, info) => {
